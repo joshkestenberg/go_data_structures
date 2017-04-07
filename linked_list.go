@@ -28,5 +28,5 @@ func main(){
 
   insert(&root, "i'm fourth")
 
-  fmt.Println(root.next.next.next.val)
+  fmt.Println(root.next.next.next.val, root.next.next.next.data)
 }
