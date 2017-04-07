@@ -50,6 +50,10 @@ func (n *node) removeNext() {
 }
 
 func (n *node) removeN(num int) {
+  if num == 0{
+    fmt.Println("value must be at least one")
+    return
+  }
   i := 0
   for i = 0; i < (num-1); i++ {
     if n.next != nil{
