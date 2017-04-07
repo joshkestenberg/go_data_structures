@@ -10,10 +10,10 @@ type node struct {
   next *node
 }
 
-func insert(n *node, val int, data string) {
-  newNode := node{val: val, data: data}
+func insert(n *node, data string) {
   for {
-    if newNode.val > n.val && n.next == nil{
+    newNode := node{val: n.val+1, data: data}
+    if n.next == nil{
       n.next = &newNode
       return
     }
@@ -26,7 +26,7 @@ func main(){
   n2 := node{val: 1, data: "i'm second", next: &n3}
   root := node{val: 0, data: "i'm root",  next: &n2}
 
-  insert(&root, 3, "i'm fourth")
+  insert(&root, "i'm fourth")
 
   fmt.Println(root.next.next.next.val)
 }
