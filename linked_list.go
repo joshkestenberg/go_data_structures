@@ -41,12 +41,25 @@ func insert(n *node, val int, data string) {
   }
 }
 
-func (n *node) remove() {
+func (n *node) removeNext() {
   if n.next == nil {
-    n = nil
+    fmt.Println("next node doesn't exist")
   } else {
-    n = n.next
+    n.next = n.next.next
   }
+}
+
+func (n *node) removeN(num int) {
+  i := 0
+  for i = 0; i < (num-1); i++ {
+    if n.next != nil{
+      n = n.next
+    } else {
+      fmt.Println("node doesn't exist")
+      return
+    }
+  }
+  n.next = n.next.next
 }
 
 func main(){
@@ -62,6 +75,16 @@ func main(){
   fmt.Println(n3.next.next.val, n3.next.next.data)
   fmt.Println(n3.next.next.next.val, n3.next.next.next.data)
 
-  n3.next.remove()
+  fmt.Println("----------------")
+
+  n3.next.removeNext()
+  fmt.Println(n3)
   fmt.Println(n3.next)
+  fmt.Println(n3.next.next)
+
+  fmt.Println("----------------")
+
+  root.removeN(2)
+  fmt.Println(root.next)
+  fmt.Println(root.next.next)
 }
