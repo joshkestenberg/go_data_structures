@@ -41,6 +41,14 @@ func insert(n *node, val int, data string) {
   }
 }
 
+func (n *node) remove() {
+  if n.next == nil {
+    n = nil
+  } else {
+    n = n.next
+  }
+}
+
 func main(){
   n3 := node{val: 2, data: "i'm third"}
   n2 := node{val: 1, data: "i'm second", next: &n3}
@@ -53,4 +61,7 @@ func main(){
   fmt.Println(n3.next.val, n3.next.data)
   fmt.Println(n3.next.next.val, n3.next.next.data)
   fmt.Println(n3.next.next.next.val, n3.next.next.next.data)
+
+  n3.next.remove()
+  fmt.Println(n3.next)
 }
