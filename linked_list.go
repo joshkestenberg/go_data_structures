@@ -145,21 +145,22 @@ func (ll *LinkList) Set(index int, data string) string {
 }
 
 func main(){
-  ll := Create("heady")
 
-  ll.Append("second")
+   ll := Create("heady")
 
-  ll.Append("third")
+   ll.Append("second")
 
-  ll.Append("fourth")
+   ll.Append("third")
 
-  ll.Insert(2, "inserted third")
+   ll.Append("fourth")
 
-  ll.Remove(2)
+   ll.Insert(2, "inserted third")
 
-  ll.Set(2, "suck it")
+   ll.Remove(2)
 
-  data := ll.Get(2)
-  fmt.Println(data)
+  //  ll.Set(2, "suck it")
+
+   data := ll.Get(2)
+   fmt.Println(data)
 
 }
