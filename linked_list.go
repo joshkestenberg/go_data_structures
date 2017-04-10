@@ -4,91 +4,162 @@ import(
   "fmt"
 )
 
-type node struct {
-  val int
+type Node struct {
+  index int
   data string
-  next *node
+  next *Node
+  prev *Node
 }
 
-func appendSequential(n *node, data string) {
-  for {
-    newNode := node{val: n.val+1, data: data}
-    if n.next == nil{
-      n.next = &newNode
-      return
-    }
-    n = n.next
-  }
+type LinkList struct {
+  head *Node
+  tail *Node
 }
 
-func insert(n *node, val int, data string) {
-  newNode := node{val: val, data: data}
-  nextNode := n.next
-  for {
-    if nextNode == nil{
-      n.next = &newNode
-      return
-    } else if newNode.val > n.val && newNode.val < n.next.val {
-      newNode.next = nextNode
-      n.next = &newNode
-      return
-    } else if newNode.val > n.val && newNode.val == n.next.val {
-      fmt.Println("The node value you've input already exists")
-      return
-    }
-    n = n.next
+func Create(data string) *LinkList {
+  ll := new(LinkList)
+  node := new(Node)
+  node.index = 0
+  node.data = data
+  ll.head = node
+  ll.tail = node
+  return ll
+}
+
+func (ll *LinkList) Append(data string) {
+  index := ll.tail.index + 1
+  newNode := Node{index: index, data: data, prev: ll.tail}
+  ll.tail.next = &newNode
+  ll.tail = &newNode
+}
+
+func (ll *LinkList) Insert(index int, data string) {
+  newNode := Node{index: index, data: data}
+  nextNode := ll.head
+  prevNode := nextNode.prev
+  if index > ll.tail.index{
+    newNode.prev = ll.tail
+    ll.tail.next = &newNode
+    ll.tail = &newNode
+  } else if index == 0 {
+    newNode.next = nextNode
+    nextNode.prev = &newNode
+    nextNode.index = 1
     nextNode = nextNode.next
-  }
-}
-
-func (n *node) removeNext() {
-  if n.next == nil {
-    fmt.Println("next node doesn't exist")
+    for{
+      if nextNode != nil{
+        nextNode.index += 1
+      } else {
+        return
+      }
+      nextNode = nextNode.next
+    }
   } else {
-    n.next = n.next.next
-  }
-}
-
-func (n *node) removeN(num int) {
-  if num == 0{
-    fmt.Println("value must be at least one")
-    return
-  }
-  i := 0
-  for i = 0; i < (num-1); i++ {
-    if n.next != nil{
-      n = n.next
-    } else {
-      fmt.Println("node doesn't exist")
-      return
+    for {
+      if nextNode.index == index{
+        newNode.prev = prevNode
+        newNode.next = nextNode
+        nextNode.prev = &newNode
+        prevNode.next = &newNode
+        for{
+          if nextNode != nil{
+            nextNode.index += 1
+          } else {
+            return
+          }
+          nextNode = nextNode.next
+        }
+      } else {
+        nextNode = nextNode.next
+        prevNode = nextNode.prev
+      }
     }
   }
-  n.next = n.next.next
+}
+
+func (ll *LinkList) Remove(index int){
+  nextNode := ll.head
+
+  if index == ll.head.index {
+    nextNode = nextNode.next
+    ll.head = nextNode
+    for {
+      if nextNode != nil{
+        nextNode.index -= 1
+      } else {
+        return
+      }
+      nextNode = nextNode.next
+    }
+  } else if index == ll.tail.index {
+    ll.tail = ll.tail.prev
+    ll.tail.next = nil
+  } else {
+    for {
+      nextNode = nextNode.next
+      if nextNode.index == index {
+        nextNode.prev.next = nextNode.next
+        nextNode.next.prev = nextNode.prev
+        nextNode = nextNode.next
+        for {
+          if nextNode != nil{
+            nextNode.index -= 1
+          } else {
+            return
+          }
+          nextNode = nextNode.next
+        }
+        nextNode = nextNode.next
+      }
+    }
+  }
+}
+
+func (ll *LinkList) Get(index int) string {
+  nextNode := ll.head
+  if index > ll.tail.index {
+    return "invalid entry"
+  }
+  for {
+    if index == nextNode.index{
+      return nextNode.data
+    } else {
+      nextNode = nextNode.next
+    }
+  }
+}
+
+func (ll *LinkList) Set(index int, data string) string {
+  nextNode := ll.head
+  if index > ll.tail.index {
+    return "invalid entry"
+  }
+  for {
+    if index == nextNode.index{
+      nextNode.data = data
+      return data
+    } else {
+      nextNode = nextNode.next
+    }
+  }
 }
 
 func main(){
-  n3 := node{val: 2, data: "i'm third"}
-  n2 := node{val: 1, data: "i'm second", next: &n3}
-  root := node{val: 0, data: "i'm root",  next: &n2}
+  ll := Create("heady")
 
-  appendSequential(&root, "i'm fourth")
-  insert(&root, 5, "i'm sixth")
-  insert(&root, 4, "i'm fifth")
+  ll.Append("second")
 
-  fmt.Println(n3.next.val, n3.next.data)
-  fmt.Println(n3.next.next.val, n3.next.next.data)
-  fmt.Println(n3.next.next.next.val, n3.next.next.next.data)
+  ll.Append("third")
 
-  fmt.Println("----------------")
+  ll.Append("fourth")
 
-  n3.next.removeNext()
-  fmt.Println(n3)
-  fmt.Println(n3.next)
-  fmt.Println(n3.next.next)
+  ll.Insert(2, "inserted third")
 
-  fmt.Println("----------------")
+  ll.Remove(2)
 
-  root.removeN(2)
-  fmt.Println(root.next)
-  fmt.Println(root.next.next)
+  ll.Set(2, "suck it")
+
+  data := ll.Get(2)
+  fmt.Println(data)
+
 }
