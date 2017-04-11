@@ -17,4 +17,8 @@ func TestBinaryTree(t *testing.T) {
 
   tree.Append(70, "first right child")
   assert.Equal(tree.head.rChild.index, 70, "append r malfunction")
+
+  assert.Equal(tree.Get(70), "first right child", "getter malfunction")
+
+  assert.Equal(tree.Set(70, "setter!"), "setter!", "setter malfunction")
 }

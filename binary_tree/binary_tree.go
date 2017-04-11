@@ -29,7 +29,7 @@ func (t *Tree) Append(index int, data string){
   nextNode := t.head
   pNode := t.head.parent
   for{
-    if n.index >= nextNode.index{
+    if n.index > nextNode.index{
       pNode = nextNode
       nextNode = nextNode.rChild
       if nextNode == nil{
@@ -45,6 +45,39 @@ func (t *Tree) Append(index int, data string){
         pNode.lChild = &n
         return
       }
+    } else {
+      fmt.Println("index must be a unique identifier")
+    }
+  }
+}
+
+func (t *Tree) Get(index int) string{
+  nextNode := t.head
+  for{
+    if index > nextNode.index{
+      nextNode = nextNode.rChild
+    } else if index < nextNode.index{
+      nextNode = nextNode.lChild
+    } else if index == nextNode.index {
+      return nextNode.data
+    } else if nextNode == nil {
+      return "index not present in tree"
+    }
+  }
+}
+
+func (t *Tree) Set(index int, data string) string{
+  nextNode := t.head
+  for{
+    if index > nextNode.index{
+      nextNode = nextNode.rChild
+    } else if index < nextNode.index{
+      nextNode = nextNode.lChild
+    } else if index == nextNode.index {
+      nextNode.data = data
+      return nextNode.data
+    } else if nextNode == nil {
+      return "index not present in tree"
     }
   }
 }
