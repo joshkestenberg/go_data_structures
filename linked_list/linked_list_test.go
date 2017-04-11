@@ -6,10 +6,6 @@ import (
   "github.com/stretchr/testify/assert"
 )
 
-// func TestBinaryTree(t *testing.T) {
-//   fmt.Println("this is a tree")
-// }
-
 func TestLinkedList(t *testing.T) {
   assert := assert.New(t)
 
